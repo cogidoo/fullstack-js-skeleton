@@ -1,0 +1,4 @@
+# git-ignore syntax of files to exclude from copying to the docker image
+
+*Dockerfile*
+node_modules
