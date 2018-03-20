@@ -11,14 +11,12 @@ ENV NODE_ENV ${NODE_ENV}
 ENV NPM_CONFIG_PREFIX /opt/.npm-global
 ENV PATH /opt/.npm-global/bin:$PATH
 
-WORKDIR /opt/app
-
-WORKDIR /opt/app
-
 # first install dependencies
+WORKDIR /opt
 COPY package.json package-lock.json* ./
 RUN npm install && npm cache clean --force
-ENV PATH /opt/app/node_modules/.bin:$PATH
+ENV PATH /opt/node_modules/.bin:$PATH
 
 # now copy source code as it changes the most
+WORKDIR /opt/app
 COPY . /opt/app

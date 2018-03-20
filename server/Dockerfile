@@ -19,14 +19,14 @@ EXPOSE ${PORT} 5858 9229
 # check every 30s to ensure service return HTTP 200
 HEALTHCHECK CMD curl -fs http://localhost:${PORT}/healthz || exit 1
 
-WORKDIR /opt/app
-
-# first install dependencies
+# first install dependencies - in an extra directory for better local-development-mounting
+WORKDIR /opt
 COPY package.json package-lock.json* ./
 RUN npm install && npm cache clean --force
-ENV PATH /opt/app/node_modules/.bin:$PATH
+ENV PATH /opt/node_modules/.bin:$PATH
 
 # now copy source code as it changes the most
+WORKDIR /opt/app
 COPY . /opt/app
 
 CMD [ "node", "index.js" ]
