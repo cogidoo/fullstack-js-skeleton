@@ -26,5 +26,12 @@ services:
     environment:
       - NODE_ENV=development
 
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - $PWD/data:/data/db
+
 volumes:
   notused:
