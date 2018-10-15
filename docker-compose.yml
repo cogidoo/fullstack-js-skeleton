@@ -18,10 +18,17 @@ services:
     command: nodemon --inspect index.js 0.0.0.0:9229
     ports:
       - "80:80"
-      - "5858:5858"
       - "9229:9229"
+      - "9230:9230"
     volumes: 
       - $PWD/server:/opt/app:delegated
+      # bind-mounting these two files in will let you add packages during development without rebuilding
+      # for example, to add bower to your app while developing, just install it inside the container
+      # and then nodemon will restart. Your changes will last until you "docker-compose down" and will
+      # be saved on host for next build
+      # docker-compose exec node npm install --save bower
+      - $PWD/server/package.json:/opt/package.json
+      - $PWD/server/package-lock.json:/opt/package-lock.json
       - notused:/opt/app/node_modules
     environment:
       - NODE_ENV=development
