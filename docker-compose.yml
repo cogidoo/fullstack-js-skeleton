@@ -9,14 +9,14 @@ services:
     ports:
       - "4200:4200"
     volumes: 
-      - $PWD/client:/opt/app:delegated
+      - $DOCKER_MOUNT_ROOT/client:/opt/app:delegated
       # bind-mounting these two files in will let you add packages during development without rebuilding
       # for example, to add bower to your app while developing, just install it inside the container
       # and then nodemon will restart. Your changes will last until you "docker-compose down" and will
       # be saved on host for next build
       # docker-compose exec node npm install --save bower
-      - $PWD/client/package.json:/opt/package.json
-      - $PWD/client/package-lock.json:/opt/package-lock.json
+      - $DOCKER_MOUNT_ROOT/client/package.json:/opt/package.json
+      - $DOCKER_MOUNT_ROOT/client/package-lock.json:/opt/package-lock.json
       - notused_client:/opt/app/node_modules
 
   server:
@@ -30,14 +30,14 @@ services:
       - "9229:9229"
       - "9230:9230"
     volumes: 
-      - $PWD/server:/opt/app:delegated
+      - $DOCKER_MOUNT_ROOT/server:/opt/app:delegated
       # bind-mounting these two files in will let you add packages during development without rebuilding
       # for example, to add bower to your app while developing, just install it inside the container
       # and then nodemon will restart. Your changes will last until you "docker-compose down" and will
       # be saved on host for next build
       # docker-compose exec node npm install --save bower
-      - $PWD/server/package.json:/opt/package.json
-      - $PWD/server/package-lock.json:/opt/package-lock.json
+      - $DOCKER_MOUNT_ROOT/server/package.json:/opt/package.json
+      - $DOCKER_MOUNT_ROOT/server/package-lock.json:/opt/package-lock.json
       - notused_server:/opt/app/node_modules
     environment:
       - NODE_ENV=development
@@ -47,7 +47,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - $PWD/data:/data/db
+      - $DOCKER_MOUNT_ROOT/data:/data/db
 
 volumes:
   notused_client:
