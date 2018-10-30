@@ -17,7 +17,7 @@ ENV NPM_CONFIG_PREFIX /opt/.npm-global
 ENV PATH /opt/.npm-global/bin:$PATH
 
 # you'll likely want the latest npm, reguardless of node version, for speed and fixes
-RUN npm i npm@latest -g
+RUN npm install -g npm@latest
 
 # first install dependencies - in an extra directory for better local-development-mounting
 WORKDIR /opt

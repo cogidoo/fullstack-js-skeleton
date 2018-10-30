@@ -1,15 +1,21 @@
-FROM node:carbon 
+FROM node:latest 
 
 RUN mkdir -p /opt/app
 
-# set node environment - either development or production
-# defaults to production, but docker-compose overrides this to development on build and run
-ARG NODE_ENV=production
-ENV NODE_ENV ${NODE_ENV}
+# default to port 4200
+ARG PORT=4200
+ENV PORT ${PORT}
+EXPOSE ${PORT}
 
 # place npm global dependencies into /opt
 ENV NPM_CONFIG_PREFIX /opt/.npm-global
 ENV PATH /opt/.npm-global/bin:$PATH
+
+# you'll likely want the latest npm, reguardless of node version, for speed and fixes
+RUN npm install -g npm@latest
+
+# install angular cli
+RUN npm install -g @angular/cli
 
 # first install dependencies
 WORKDIR /opt

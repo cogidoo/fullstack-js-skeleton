@@ -5,10 +5,19 @@ services:
   client:
     build:
       context: client/.
-    command: echo 'client ready'
+    command: ng serve --watch --host 0.0.0.0
+    ports:
+      - "4200:4200"
     volumes: 
       - $PWD/client:/opt/app:delegated
-      - notused:/opt/app/node_modules
+      # bind-mounting these two files in will let you add packages during development without rebuilding
+      # for example, to add bower to your app while developing, just install it inside the container
+      # and then nodemon will restart. Your changes will last until you "docker-compose down" and will
+      # be saved on host for next build
+      # docker-compose exec node npm install --save bower
+      - $PWD/client/package.json:/opt/package.json
+      - $PWD/client/package-lock.json:/opt/package-lock.json
+      - notused_client:/opt/app/node_modules
 
   server:
     build: 
@@ -29,7 +38,7 @@ services:
       # docker-compose exec node npm install --save bower
       - $PWD/server/package.json:/opt/package.json
       - $PWD/server/package-lock.json:/opt/package-lock.json
-      - notused:/opt/app/node_modules
+      - notused_server:/opt/app/node_modules
     environment:
       - NODE_ENV=development
 
@@ -41,4 +50,5 @@ services:
       - $PWD/data:/data/db
 
 volumes:
-  notused:
+  notused_client:
+  notused_server:
